@@ -10,7 +10,7 @@ Try the bundled fictional data with `--sample`; this mode works offline and does
 
 ## Demo
 
-Live demo: [GitHub Pages demo](https://your-username.github.io/rip-git/) (replace this placeholder after publishing).
+Live demo: [RIP.git graveyard](https://mellifluous-hummingbird-3ab5e0.netlify.app/). It shows fictional sample repositories for **Demo Developer**.
 
 ## How it works
 
@@ -23,12 +23,14 @@ Live demo: [GitHub Pages demo](https://your-username.github.io/rip-git/) (replac
 Requirements: Python 3.10 or later, Git, and [Ollama](https://ollama.com/download) for model-generated text. The sample build can run without Ollama.
 
 ```powershell
-cd C:\path\to\rip-git
+cd C:\path\to\rip
 py -3 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
+
+Troubleshooting: save `.env` as UTF-8 without a BOM; otherwise `GITHUB_TOKEN` is silently ignored.
 
 Open `.env` in a text editor and set `GITHUB_TOKEN` to a GitHub token if you plan to fetch real repositories. A token is optional, but GitHub's unauthenticated API has a lower rate limit. Do not paste the token into commands or commit `.env`.
 
@@ -65,10 +67,18 @@ Set values in the local `.env` file:
 
 The model can also be overridden for a single build with `--model NAME`. The repository count can be changed with `--limit N`.
 
+## Privacy and models
+
+- Only public repository metadata is read from the GitHub API; private repositories are never fetched.
+- The token is read from the local `.env`, used only for GitHub API requests, and never written to the output.
+- The model receives only the repository name, language, days since last push, first line of the last commit message, open issues, stars, and description.
+- The default model, `gemma4:cloud`, is served through Ollama's cloud. Set `OLLAMA_MODEL` to a locally pulled model to keep inference on your own machine.
+- Sample mode and fallback text work fully offline.
+
 ## Project structure
 
 ```text
-rip-git/
+rip/
   ripgit/                 Python fetch, narration, site builder, and CLI
     templates/            Jinja2 page template
   data/                   Fictional offline sample repositories
@@ -80,15 +90,18 @@ rip-git/
 
 ## Why open-source AI matters here
 
-RIP.git uses an open-weight model through Ollama, and you can switch models by changing `OLLAMA_MODEL`. With a locally available model, narration can run on your machine without vendor lock-in or per-call API fees. The sample mode also demonstrates the whole site-building flow offline. `gemma4:cloud` is the configured default; choose a locally runnable Ollama model if you want model inference to stay entirely on your computer.
+RIP.git uses an open-weight model through Ollama, and you can switch models by changing `OLLAMA_MODEL`. With a locally available model, narration can run on your machine without vendor lock-in or per-call API fees. `gemma4:cloud` is the configured default; choose a locally runnable Ollama model if you want model inference to stay entirely on your computer.
 
-## Publish with GitHub Pages
+## Alternative: GitHub Pages
 
 1. Push this repository to GitHub. Keep `.env` local; it is ignored by Git.
 2. In the repository, open **Settings → Pages**.
 3. Under **Build and deployment**, choose **Deploy from a branch**, select the branch containing the generated page (usually `main`) and the `/docs` folder, then save.
-4. Wait for GitHub Pages to publish the site. The demo URL should be `https://YOUR-USERNAME.github.io/rip-git/` for a repository named `rip-git`.
-5. To attach a custom domain, enter it in the **Custom domain** field on that Pages settings screen and save. Configure the DNS records GitHub Pages requests for your domain, then wait for DNS verification. Add a `CNAME` file in `docs/` containing the domain if you manage the site source directly; keep it in place on later builds.
+4. Wait for GitHub Pages to publish the site at `https://DS013git.github.io/rip/`.
+
+## Deploying
+
+Netlify publishes the `docs/` folder with no build command. The `netlify.toml` deployment file is not present in this checkout. To redeploy, regenerate the page locally, commit `docs/index.html`, and push the commit.
 
 Regenerate the committed page after changing its data or design:
 
@@ -107,8 +120,15 @@ Run the test suite from the project root:
 python -m pytest
 ```
 
+## Known limitations
+
+- Repositories are sorted oldest-first before the limit is applied, so accounts with many dead repositories may show few or no dying repositories.
+- When Ollama is unreachable or returns invalid output, deterministic fallback text is used.
+- The model is instructed not to invent facts, but its output is not automatically checked against the supplied data.
+- Counts such as "1 stars" are not pluralised.
+
 ## Contest deadline follow-up
 
 Any commits after the contest deadline are listed here:
 
--
+- None at the time of submission.
