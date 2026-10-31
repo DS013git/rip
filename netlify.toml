@@ -1,0 +1,4 @@
+# The site is pre-generated into docs/ (see README), so no build step is needed.
+[build]
+  publish = "docs"
+  command = ""
