@@ -2,6 +2,10 @@
 
 import argparse
 
+from ripgit.build_site import build_site
+from ripgit.fetch import fetch_repositories, load_sample_data
+from ripgit.narrator import generate_haunting, narrate_repositories
+
 
 def make_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="python -m ripgit.cli", description="Build a spooky graveyard for GitHub repositories.")
@@ -16,7 +20,20 @@ def make_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     parser = make_parser()
-    parser.parse_args()
+    args = parser.parse_args()
+    if not args.sample and not args.username:
+        parser.error("username is required unless --sample is used")
+
+    repos = (
+        load_sample_data(args.limit)
+        if args.sample
+        else fetch_repositories(args.username, limit=args.limit)
+    )
+    narrated = narrate_repositories(repos, model=args.model)
+    haunting = generate_haunting(narrated, model=args.model)
+    username = args.username or "Demo Developer"
+    output = build_site(narrated, username, haunting)
+    print(f"Graveyard page written to {output}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en" data-tone="gentle">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RIP.git — {{ username }}'s Graveyard</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #090b11;
+      --stone: #1a1b24;
+      --stone-edge: #777385;
+      --bone: #eee6d2;
+      --muted: #b0aaba;
+      --gold: #ffc66d;
+      --rose: #e6a0a0;
+      --mint: #9bc6a7;
+      font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--bone);
+      background:
+        radial-gradient(ellipse at 50% 0%, #302639 0, transparent 48%),
+        radial-gradient(ellipse at 8% 52%, #18232b 0, transparent 40%),
+        linear-gradient(180deg, #11111b, var(--night) 60%, #11130f);
+      line-height: 1.55;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 85%, #b5a7c012, transparent 55%);
+      filter: blur(24px);
+    }
+    header, main, footer { width: min(1120px, calc(100% - 32px)); margin-inline: auto; }
+    header { text-align: center; padding: 56px 0 30px; position: relative; }
+    h1 { margin: 4px 0 8px; font-size: clamp(2.2rem, 7vw, 4.2rem); letter-spacing: .03em; }
+    .subtitle { color: var(--muted); margin: 0 auto 25px; }
+    .candle {
+      width: 13px; height: 28px; border-radius: 50% 50% 3px 3px;
+      background: linear-gradient(#fff2b5, #ff9e47 65%, #8d4c32);
+      margin: 0 auto 16px;
+      box-shadow: 0 0 14px 7px #ffb34f55, 0 0 50px 23px #ff9d2930;
+      animation: flicker 2.8s ease-in-out infinite alternate;
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: .88; transform: scale(.96); box-shadow: 0 0 13px 6px #ffb34f55, 0 0 45px 20px #ff9d2928; }
+      45% { opacity: 1; transform: scale(1.06); box-shadow: 0 0 19px 9px #ffd16c66, 0 0 58px 28px #ff9d2938; }
+      72% { opacity: .78; transform: scale(.91); }
+    }
+    .stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .stat { min-width: 135px; padding: 10px 14px; border: 1px solid #ffffff1d; border-radius: 12px; background: #11121bc9; }
+    .stat strong { display: block; color: var(--gold); font-size: 1.3rem; }
+    .stat span { color: var(--muted); font: .82rem/1.35 system-ui, sans-serif; }
+    .controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; margin: 0 auto 28px; }
+    button, select {
+      color: var(--bone); background: #22212b; border: 1px solid #777385;
+      border-radius: 999px; padding: 10px 16px; font: 600 .92rem system-ui, sans-serif;
+    }
+    button { cursor: pointer; }
+    button:hover, select:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .filter-label { color: var(--muted); font: .9rem system-ui, sans-serif; }
+    .graveyard { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr)); gap: 20px; align-items: stretch; }
+    .tombstone {
+      position: relative; padding: 28px 20px 20px; min-width: 0;
+      background: linear-gradient(145deg, #292832, var(--stone) 55%, #13151d);
+      border: 1px solid var(--stone-edge);
+      border-radius: 48% 48% 12px 12px / 13% 13% 12px 12px;
+      box-shadow: inset 0 1px #ffffff15, 0 12px 28px #0007;
+      text-align: center; overflow-wrap: anywhere;
+    }
+    .tombstone::before { content: "✝"; display: block; color: #c6b98c; font-size: 1.25rem; margin-bottom: 2px; }
+    .tombstone h2 { font-size: 1.35rem; margin: 4px 0 8px; }
+    .language { color: var(--muted); margin: 0 0 8px; font: .88rem system-ui, sans-serif; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: .08em; font: 700 .7rem system-ui, sans-serif; }
+    .badge.alive { color: #c1ebc9; background: #294a35; }
+    .badge.dying { color: #ffe0a3; background: #5a4321; }
+    .badge.dead { color: #ffc0bf; background: #572e38; }
+    .age { color: var(--muted); font: .86rem system-ui, sans-serif; margin: 10px 0; }
+    .cause { color: #f5c77d; font-style: italic; margin: 8px 0 12px; }
+    .epitaph { min-height: 3.1em; margin: 0 0 13px; }
+    .savage-text { display: none; color: #f0b0a7; }
+    html[data-tone="savage"] .gentle-text { display: none; }
+    html[data-tone="savage"] .savage-text { display: block; }
+    .last-commit { color: #c5bdc8; font-size: .91rem; margin: 10px 0; }
+    .counts { color: var(--muted); font: .82rem system-ui, sans-serif; }
+    .haunting { margin: 58px 0 28px; padding: 22px; border: 1px solid #90806466; border-radius: 16px; background: #14131dbb; }
+    .haunting h2 { color: var(--gold); margin: 0 0 8px; }
+    .haunting ul { margin-bottom: 0; }
+    .haunting li { margin: 7px 0; color: #d5c9d9; }
+    footer { color: var(--muted); text-align: center; padding: 30px 0 42px; font: .85rem system-ui, sans-serif; }
+    footer a { color: #e7c77f; }
+    [hidden] { display: none !important; }
+    @media (max-width: 520px) {
+      header { padding-top: 38px; }
+      .stat { flex: 1 1 42%; }
+      .tombstone { min-height: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="candle" aria-hidden="true"></div>
+    <p class="subtitle">An open-model memorial for the repos of</p>
+    <h1>{{ username }}'s Graveyard</h1>
+    <div class="stats" aria-label="Graveyard statistics">
+      <div class="stat"><strong>{{ total_repos }}</strong><span>repos remembered</span></div>
+      <div class="stat"><strong>{{ dead_count }}</strong><span>dead</span></div>
+      <div class="stat"><strong>{{ dying_count }}</strong><span>dying</span></div>
+      <div class="stat"><strong>{{ oldest_days }}</strong><span>days since your last commit to the oldest grave</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="controls">
+      <button id="tone-toggle" type="button" aria-pressed="false">Tone: Gentle Ghost</button>
+      <label class="filter-label" for="status-filter">Show status</label>
+      <select id="status-filter">
+        <option value="all">All repos</option>
+        <option value="alive">Alive</option>
+        <option value="dying">Dying</option>
+        <option value="dead">Dead</option>
+      </select>
+    </div>
+
+    <section class="graveyard" aria-label="Repository tombstones">
+      {% for repo in repos %}
+      <article class="tombstone" data-status="{{ repo.status }}">
+        <h2>{{ repo.name }}</h2>
+        <p class="language">{{ repo.language or "Language unknown" }}</p>
+        <span class="badge {{ repo.status }}">{{ repo.status }}</span>
+        <p class="age">
+          {% if repo.status == "dead" %}Died {{ repo.days_since_last_push }} days ago
+          {% else %}Last pushed {{ repo.days_since_last_push }} days ago{% endif %}
+        </p>
+        <p class="cause">Cause of death: {{ repo.cause_of_death }}</p>
+        <p class="epitaph gentle-text">{{ repo.gentle }}</p>
+        <p class="epitaph savage-text">{{ repo.savage }}</p>
+        <p class="last-commit">Last commit: “{{ repo.last_commit_message or "No commit message recorded" }}”</p>
+        <p class="counts">★ {{ repo.stars }} stars · {{ repo.open_issues }} open issues</p>
+      </article>
+      {% endfor %}
+    </section>
+
+    <section class="haunting" aria-labelledby="haunting-title">
+      <h2 id="haunting-title">The Haunting</h2>
+      {% if haunting %}
+      <ul>
+        {% for ghost in haunting %}<li><strong>{{ ghost.name }}:</strong> “{{ ghost.whisper }}”</li>{% endfor %}
+      </ul>
+      {% else %}
+      <p>The graveyard is quiet. No dying repos are whispering.</p>
+      {% endif %}
+    </section>
+  </main>
+
+  <footer>
+    Built with open-weight AI (Gemma via Ollama) · <a href="https://github.com/your-username/rip-git">RIP.git on GitHub</a>
+  </footer>
+
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const toneButton = document.getElementById("tone-toggle");
+      const statusFilter = document.getElementById("status-filter");
+      toneButton.addEventListener("click", () => {
+        const savage = root.dataset.tone !== "savage";
+        root.dataset.tone = savage ? "savage" : "gentle";
+        toneButton.textContent = savage ? "Tone: Savage Reaper" : "Tone: Gentle Ghost";
+        toneButton.setAttribute("aria-pressed", String(savage));
+      });
+      statusFilter.addEventListener("change", () => {
+        document.querySelectorAll(".tombstone").forEach((card) => {
+          card.hidden = statusFilter.value !== "all" && card.dataset.status !== statusFilter.value;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en" data-tone="gentle">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RIP.git — Demo Developer's Graveyard</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #090b11;
+      --stone: #1a1b24;
+      --stone-edge: #777385;
+      --bone: #eee6d2;
+      --muted: #b0aaba;
+      --gold: #ffc66d;
+      --rose: #e6a0a0;
+      --mint: #9bc6a7;
+      font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--bone);
+      background:
+        radial-gradient(ellipse at 50% 0%, #302639 0, transparent 48%),
+        radial-gradient(ellipse at 8% 52%, #18232b 0, transparent 40%),
+        linear-gradient(180deg, #11111b, var(--night) 60%, #11130f);
+      line-height: 1.55;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 85%, #b5a7c012, transparent 55%);
+      filter: blur(24px);
+    }
+    header, main, footer { width: min(1120px, calc(100% - 32px)); margin-inline: auto; }
+    header { text-align: center; padding: 56px 0 30px; position: relative; }
+    h1 { margin: 4px 0 8px; font-size: clamp(2.2rem, 7vw, 4.2rem); letter-spacing: .03em; }
+    .subtitle { color: var(--muted); margin: 0 auto 25px; }
+    .candle {
+      width: 13px; height: 28px; border-radius: 50% 50% 3px 3px;
+      background: linear-gradient(#fff2b5, #ff9e47 65%, #8d4c32);
+      margin: 0 auto 16px;
+      box-shadow: 0 0 14px 7px #ffb34f55, 0 0 50px 23px #ff9d2930;
+      animation: flicker 2.8s ease-in-out infinite alternate;
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: .88; transform: scale(.96); box-shadow: 0 0 13px 6px #ffb34f55, 0 0 45px 20px #ff9d2928; }
+      45% { opacity: 1; transform: scale(1.06); box-shadow: 0 0 19px 9px #ffd16c66, 0 0 58px 28px #ff9d2938; }
+      72% { opacity: .78; transform: scale(.91); }
+    }
+    .stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .stat { min-width: 135px; padding: 10px 14px; border: 1px solid #ffffff1d; border-radius: 12px; background: #11121bc9; }
+    .stat strong { display: block; color: var(--gold); font-size: 1.3rem; }
+    .stat span { color: var(--muted); font: .82rem/1.35 system-ui, sans-serif; }
+    .controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; margin: 0 auto 28px; }
+    button, select {
+      color: var(--bone); background: #22212b; border: 1px solid #777385;
+      border-radius: 999px; padding: 10px 16px; font: 600 .92rem system-ui, sans-serif;
+    }
+    button { cursor: pointer; }
+    button:hover, select:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .filter-label { color: var(--muted); font: .9rem system-ui, sans-serif; }
+    .graveyard { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr)); gap: 20px; align-items: stretch; }
+    .tombstone {
+      position: relative; padding: 28px 20px 20px; min-width: 0;
+      background: linear-gradient(145deg, #292832, var(--stone) 55%, #13151d);
+      border: 1px solid var(--stone-edge);
+      border-radius: 48% 48% 12px 12px / 13% 13% 12px 12px;
+      box-shadow: inset 0 1px #ffffff15, 0 12px 28px #0007;
+      text-align: center; overflow-wrap: anywhere;
+    }
+    .tombstone::before { content: "✝"; display: block; color: #c6b98c; font-size: 1.25rem; margin-bottom: 2px; }
+    .tombstone h2 { font-size: 1.35rem; margin: 4px 0 8px; }
+    .language { color: var(--muted); margin: 0 0 8px; font: .88rem system-ui, sans-serif; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: .08em; font: 700 .7rem system-ui, sans-serif; }
+    .badge.alive { color: #c1ebc9; background: #294a35; }
+    .badge.dying { color: #ffe0a3; background: #5a4321; }
+    .badge.dead { color: #ffc0bf; background: #572e38; }
+    .age { color: var(--muted); font: .86rem system-ui, sans-serif; margin: 10px 0; }
+    .cause { color: #f5c77d; font-style: italic; margin: 8px 0 12px; }
+    .epitaph { min-height: 3.1em; margin: 0 0 13px; }
+    .savage-text { display: none; color: #f0b0a7; }
+    html[data-tone="savage"] .gentle-text { display: none; }
+    html[data-tone="savage"] .savage-text { display: block; }
+    .last-commit { color: #c5bdc8; font-size: .91rem; margin: 10px 0; }
+    .counts { color: var(--muted); font: .82rem system-ui, sans-serif; }
+    .haunting { margin: 58px 0 28px; padding: 22px; border: 1px solid #90806466; border-radius: 16px; background: #14131dbb; }
+    .haunting h2 { color: var(--gold); margin: 0 0 8px; }
+    .haunting ul { margin-bottom: 0; }
+    .haunting li { margin: 7px 0; color: #d5c9d9; }
+    footer { color: var(--muted); text-align: center; padding: 30px 0 42px; font: .85rem system-ui, sans-serif; }
+    footer a { color: #e7c77f; }
+    [hidden] { display: none !important; }
+    @media (max-width: 520px) {
+      header { padding-top: 38px; }
+      .stat { flex: 1 1 42%; }
+      .tombstone { min-height: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="candle" aria-hidden="true"></div>
+    <p class="subtitle">An open-model memorial for the repos of</p>
+    <h1>Demo Developer's Graveyard</h1>
+    <div class="stats" aria-label="Graveyard statistics">
+      <div class="stat"><strong>12</strong><span>repos remembered</span></div>
+      <div class="stat"><strong>6</strong><span>dead</span></div>
+      <div class="stat"><strong>3</strong><span>dying</span></div>
+      <div class="stat"><strong>412</strong><span>days since your last commit to the oldest grave</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="controls">
+      <button id="tone-toggle" type="button" aria-pressed="false">Tone: Gentle Ghost</button>
+      <label class="filter-label" for="status-filter">Show status</label>
+      <select id="status-filter">
+        <option value="all">All repos</option>
+        <option value="alive">Alive</option>
+        <option value="dying">Dying</option>
+        <option value="dead">Dead</option>
+      </select>
+    </div>
+
+    <section class="graveyard" aria-label="Repository tombstones">
+      
+      <article class="tombstone" data-status="dead">
+        <h2>todo-app-v7-final</h2>
+        <p class="language">Python</p>
+        <span class="badge dead">dead</span>
+        <p class="age">
+          Died 412 days ago
+          
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">todo-app-v7-final has been quiet for 412 days; its last commit, “final final cleanup,” is a small light left on.</p>
+        <p class="epitaph savage-text">todo-app-v7-final has been quiet for 412 days; “final final cleanup” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “final final cleanup”</p>
+        <p class="counts">★ 2 stars · 4 open issues</p>
+      </article>
+      
+      <article class="tombstone" data-status="dead">
+        <h2>ai-startup-idea</h2>
+        <p class="language">TypeScript</p>
+        <span class="badge dead">dead</span>
+        <p class="age">
+          Died 366 days ago
+          
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">ai-startup-idea has been quiet for 366 days; its last commit, “add idea notes,” is a small light left on.</p>
+        <p class="epitaph savage-text">ai-startup-idea has been quiet for 366 days; “add idea notes” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “add idea notes”</p>
+        <p class="counts">★ 8 stars · 6 open issues</p>
+      </article>
+      
+      <article class="tombstone" data-status="dead">
+        <h2>weather-app-weather-app</h2>
+        <p class="language">JavaScript</p>
+        <span class="badge dead">dead</span>
+        <p class="age">
+          Died 241 days ago
+          
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">weather-app-weather-app has been quiet for 241 days; its last commit, “try another icon set,” is a small light left on.</p>
+        <p class="epitaph savage-text">weather-app-weather-app has been quiet for 241 days; “try another icon set” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “try another icon set”</p>
+        <p class="counts">★ 1 stars · 2 open issues</p>
+      </article>
+      
+      <article class="tombstone" data-status="dead">
+        <h2>recipe-scraper-2</h2>
+        <p class="language">Python</p>
+        <span class="badge dead">dead</span>
+        <p class="age">
+          Died 188 days ago
+          
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">recipe-scraper-2 has been quiet for 188 days; its last commit, “handle one more site,” is a small light left on.</p>
+        <p class="epitaph savage-text">recipe-scraper-2 has been quiet for 188 days; “handle one more site” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “handle one more site”</p>
+        <p class="counts">★ 3 stars · 1 open issues</p>
+      </article>
+      
+      <article class="tombstone" data-status="dead">
+        <h2>my-first-framework</h2>
+        <p class="language">Rust</p>
+        <span class="badge dead">dead</span>
+        <p class="age">
+          Died 120 days ago
+          
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">my-first-framework has been quiet for 120 days; its last commit, “rename core module,” is a small light left on.</p>
+        <p class="epitaph savage-text">my-first-framework has been quiet for 120 days; “rename core module” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “rename core module”</p>
+        <p class="counts">★ 5 stars · 9 open issues</p>
+      </article>
+      
+      <article class="tombstone" data-status="dead">
+        <h2>someday-dashboard</h2>
+        <p class="language">Go</p>
+        <span class="badge dead">dead</span>
+        <p class="age">
+          Died 91 days ago
+          
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">someday-dashboard has been quiet for 91 days; its last commit, “wire up charts,” is a small light left on.</p>
+        <p class="epitaph savage-text">someday-dashboard has been quiet for 91 days; “wire up charts” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “wire up charts”</p>
+        <p class="counts">★ 0 stars · 3 open issues</p>
+      </article>
+      
+      <article class="tombstone" data-status="dying">
+        <h2>habit-tracker-redux</h2>
+        <p class="language">Kotlin</p>
+        <span class="badge dying">dying</span>
+        <p class="age">
+          Last pushed 78 days ago
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">habit-tracker-redux has been quiet for 78 days; its last commit, “fix streak calculation,” is a small light left on.</p>
+        <p class="epitaph savage-text">habit-tracker-redux has been quiet for 78 days; “fix streak calculation” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “fix streak calculation”</p>
+        <p class="counts">★ 4 stars · 5 open issues</p>
+      </article>
+      
+      <article class="tombstone" data-status="dying">
+        <h2>markdown-but-better</h2>
+        <p class="language">JavaScript</p>
+        <span class="badge dying">dying</span>
+        <p class="age">
+          Last pushed 60 days ago
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">markdown-but-better has been quiet for 60 days; its last commit, “button polish,” is a small light left on.</p>
+        <p class="epitaph savage-text">markdown-but-better has been quiet for 60 days; “button polish” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “button polish”</p>
+        <p class="counts">★ 6 stars · 2 open issues</p>
+      </article>
+      
+      <article class="tombstone" data-status="dying">
+        <h2>portfolio-new-new</h2>
+        <p class="language">HTML</p>
+        <span class="badge dying">dying</span>
+        <p class="age">
+          Last pushed 45 days ago
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">portfolio-new-new has been quiet for 45 days; its last commit, “adjust hero spacing,” is a small light left on.</p>
+        <p class="epitaph savage-text">portfolio-new-new has been quiet for 45 days; “adjust hero spacing” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “adjust hero spacing”</p>
+        <p class="counts">★ 1 stars · 1 open issues</p>
+      </article>
+      
+      <article class="tombstone" data-status="alive">
+        <h2>cli-for-everything</h2>
+        <p class="language">Python</p>
+        <span class="badge alive">alive</span>
+        <p class="age">
+          Last pushed 22 days ago
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">cli-for-everything has been quiet for 22 days; its last commit, “add --help example,” is a small light left on.</p>
+        <p class="epitaph savage-text">cli-for-everything has been quiet for 22 days; “add --help example” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “add --help example”</p>
+        <p class="counts">★ 12 stars · 7 open issues</p>
+      </article>
+      
+      <article class="tombstone" data-status="alive">
+        <h2>tiny-game-prototype</h2>
+        <p class="language">C#</p>
+        <span class="badge alive">alive</span>
+        <p class="age">
+          Last pushed 9 days ago
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">tiny-game-prototype has been quiet for 9 days; its last commit, “tune player jump,” is a small light left on.</p>
+        <p class="epitaph savage-text">tiny-game-prototype has been quiet for 9 days; “tune player jump” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “tune player jump”</p>
+        <p class="counts">★ 9 stars · 0 open issues</p>
+      </article>
+      
+      <article class="tombstone" data-status="alive">
+        <h2>one-more-static-site</h2>
+        <p class="language">CSS</p>
+        <span class="badge alive">alive</span>
+        <p class="age">
+          Last pushed 2 days ago
+        </p>
+        <p class="cause">Cause of death: Long silence after the last push</p>
+        <p class="epitaph gentle-text">one-more-static-site has been quiet for 2 days; its last commit, “update footer,” is a small light left on.</p>
+        <p class="epitaph savage-text">one-more-static-site has been quiet for 2 days; “update footer” is taking an impressive intermission.</p>
+        <p class="last-commit">Last commit: “update footer”</p>
+        <p class="counts">★ 2 stars · 0 open issues</p>
+      </article>
+      
+    </section>
+
+    <section class="haunting" aria-labelledby="haunting-title">
+      <h2 id="haunting-title">The Haunting</h2>
+      
+      <ul>
+        <li><strong>habit-tracker-redux:</strong> “habit-tracker-redux whispers: please commit within 13 days; I miss the noise.”</li><li><strong>markdown-but-better:</strong> “markdown-but-better whispers: please commit within 31 days; I miss the noise.”</li><li><strong>portfolio-new-new:</strong> “portfolio-new-new whispers: please commit within 46 days; I miss the noise.”</li>
+      </ul>
+      
+    </section>
+  </main>
+
+  <footer>
+    Built with open-weight AI (Gemma via Ollama) · <a href="https://github.com/your-username/rip-git">RIP.git on GitHub</a>
+  </footer>
+
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const toneButton = document.getElementById("tone-toggle");
+      const statusFilter = document.getElementById("status-filter");
+      toneButton.addEventListener("click", () => {
+        const savage = root.dataset.tone !== "savage";
+        root.dataset.tone = savage ? "savage" : "gentle";
+        toneButton.textContent = savage ? "Tone: Savage Reaper" : "Tone: Gentle Ghost";
+        toneButton.setAttribute("aria-pressed", String(savage));
+      });
+      statusFilter.addEventListener("change", () => {
+        document.querySelectorAll(".tombstone").forEach((card) => {
+          card.hidden = statusFilter.value !== "all" && card.dataset.status !== statusFilter.value;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
