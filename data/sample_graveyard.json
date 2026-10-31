@@ -1,0 +1,14 @@
+[
+  {"name": "todo-app-v7-final", "description": "The seventh final todo list", "language": "Python", "stars": 2, "open_issues": 4, "days_since_last_push": 412, "status": "dead", "last_commit_message": "final final cleanup"},
+  {"name": "ai-startup-idea", "description": "A very broad AI startup concept", "language": "TypeScript", "stars": 8, "open_issues": 6, "days_since_last_push": 366, "status": "dead", "last_commit_message": "add idea notes"},
+  {"name": "weather-app-weather-app", "description": "A weather app with many weather icons", "language": "JavaScript", "stars": 1, "open_issues": 2, "days_since_last_push": 241, "status": "dead", "last_commit_message": "try another icon set"},
+  {"name": "recipe-scraper-2", "description": "Recipes collected for later", "language": "Python", "stars": 3, "open_issues": 1, "days_since_last_push": 188, "status": "dead", "last_commit_message": "handle one more site"},
+  {"name": "my-first-framework", "description": "A framework for making frameworks", "language": "Rust", "stars": 5, "open_issues": 9, "days_since_last_push": 120, "status": "dead", "last_commit_message": "rename core module"},
+  {"name": "someday-dashboard", "description": "A dashboard for future plans", "language": "Go", "stars": 0, "open_issues": 3, "days_since_last_push": 91, "status": "dead", "last_commit_message": "wire up charts"},
+  {"name": "habit-tracker-redux", "description": "Track habits after a short setup", "language": "Kotlin", "stars": 4, "open_issues": 5, "days_since_last_push": 78, "status": "dying", "last_commit_message": "fix streak calculation"},
+  {"name": "markdown-but-better", "description": "Markdown with one extra button", "language": "JavaScript", "stars": 6, "open_issues": 2, "days_since_last_push": 60, "status": "dying", "last_commit_message": "button polish"},
+  {"name": "portfolio-new-new", "description": "A portfolio refresh in progress", "language": "HTML", "stars": 1, "open_issues": 1, "days_since_last_push": 45, "status": "dying", "last_commit_message": "adjust hero spacing"},
+  {"name": "cli-for-everything", "description": "A command line for a tiny task", "language": "Python", "stars": 12, "open_issues": 7, "days_since_last_push": 22, "status": "alive", "last_commit_message": "add --help example"},
+  {"name": "tiny-game-prototype", "description": "A small weekend game", "language": "C#", "stars": 9, "open_issues": 0, "days_since_last_push": 9, "status": "alive", "last_commit_message": "tune player jump"},
+  {"name": "one-more-static-site", "description": "A minimal static site experiment", "language": "CSS", "stars": 2, "open_issues": 0, "days_since_last_push": 2, "status": "alive", "last_commit_message": "update footer"}
+]
