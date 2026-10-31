@@ -33,7 +33,11 @@ def main() -> None:
     haunting = generate_haunting(narrated, model=args.model)
     username = args.username or "Demo Developer"
     output = build_site(narrated, username, haunting)
-    print(f"Graveyard page written to {output}")
+    fallback_count = sum(repo["narration_fallback"] for repo in narrated)
+    gemma_count = len(narrated) - fallback_count
+    print(f"Repos processed: {len(narrated)}")
+    print(f"Gemma used: {gemma_count} | fallback used: {fallback_count}")
+    print(f"Output: {output}")
 
 
 if __name__ == "__main__":

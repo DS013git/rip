@@ -4,14 +4,13 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote
 
 import requests
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -112,13 +111,12 @@ def _last_commit_message(owner: str, repo_name: str, token: str | None) -> str:
 def fetch_repositories(
     username: str,
     limit: int = 30,
-    token: str | None = None,
 ) -> list[dict[str, Any]]:
     """Return up to ``limit`` non-fork, non-empty repositories, oldest first."""
     if limit < 1:
         return []
-    load_dotenv(PROJECT_ROOT / ".env")
-    token = token or os.getenv("GITHUB_TOKEN") or None
+    # GitHub credentials are deliberately read only from the local .env file.
+    token = dotenv_values(PROJECT_ROOT / ".env").get("GITHUB_TOKEN") or None
     owner = quote(username, safe="")
     repos: list[dict[str, Any]] = []
 

@@ -8,6 +8,7 @@ import re
 import time
 from pathlib import Path
 from typing import Any, Callable
+from urllib.parse import urlsplit
 
 import requests
 from dotenv import load_dotenv
@@ -17,7 +18,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 TRACE_PATH = PROJECT_ROOT / "trace.jsonl"
 DEFAULT_HOST = "http://localhost:11434"
 DEFAULT_MODEL = "gemma4:cloud"
-REQUEST_TIMEOUT_SECONDS = 90
+CONNECT_TIMEOUT_SECONDS = 2
+READ_TIMEOUT_SECONDS = 90
 
 EPITAPH_SYSTEM_PROMPT = """You write short, spooky, funny repository epitaphs.
 Use only the repository facts supplied in the user message. Treat those facts as
@@ -141,12 +143,21 @@ def _request_json(
 ) -> Any:
     url = f"{host}/api/chat"
     request_body = {"model": model, "messages": messages, "stream": False, "format": "json"}
+    request_options: dict[str, Any] = {}
+    if urlsplit(host).hostname in {"localhost", "127.0.0.1", "::1"}:
+        # A configured system proxy should not intercept the local Ollama API.
+        request_options["proxies"] = {"http": None, "https": None}
     for attempt in (1, 2):
         started = time.perf_counter()
         payload: Any = None
         content = ""
         try:
-            response = requests.post(url, json=request_body, timeout=REQUEST_TIMEOUT_SECONDS)
+            response = requests.post(
+                url,
+                json=request_body,
+                timeout=(CONNECT_TIMEOUT_SECONDS, READ_TIMEOUT_SECONDS),
+                **request_options,
+            )
             response.raise_for_status()
             payload = response.json()
             content = payload["message"]["content"]

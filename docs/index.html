@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RIP.git — Demo Developer's Graveyard</title>
+  <meta name="description" content="A spooky, open-model graveyard for Demo Developer's GitHub repositories.">
+  <meta name="theme-color" content="#090b11">
+  <title>RIP.git | Demo Developer's Graveyard</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23352e3d' stroke='%23d2c08a' stroke-width='3' d='M10 60V27a22 22 0 0 1 44 0v33z'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='serif' font-size='19' fill='%23f2e8cf'%3ERIP%3C/text%3E%3C/svg%3E">
   <style>
     :root {
       color-scheme: dark;
@@ -89,6 +92,9 @@
     html[data-tone="savage"] .savage-text { display: block; }
     .last-commit { color: #c5bdc8; font-size: .91rem; margin: 10px 0; }
     .counts { color: var(--muted); font: .82rem system-ui, sans-serif; }
+    .copy-button { margin-top: 12px; padding: 8px 13px; font-size: .78rem; }
+    .copy-status { display: block; min-height: 1.3em; color: var(--mint); font: .78rem system-ui, sans-serif; }
+    .empty-state { margin: 0 auto 26px; padding: 14px 18px; max-width: 620px; border: 1px dashed #c3a86e88; border-radius: 12px; color: #f3d99b; text-align: center; background: #17151cbb; }
     .haunting { margin: 58px 0 28px; padding: 22px; border: 1px solid #90806466; border-radius: 16px; background: #14131dbb; }
     .haunting h2 { color: var(--gold); margin: 0 0 8px; }
     .haunting ul { margin-bottom: 0; }
@@ -146,6 +152,8 @@
         <p class="epitaph savage-text">todo-app-v7-final has been quiet for 412 days; “final final cleanup” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “final final cleanup”</p>
         <p class="counts">★ 2 stars · 4 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP todo-app-v7-final, 412 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
       <article class="tombstone" data-status="dead">
@@ -161,6 +169,8 @@
         <p class="epitaph savage-text">ai-startup-idea has been quiet for 366 days; “add idea notes” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “add idea notes”</p>
         <p class="counts">★ 8 stars · 6 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP ai-startup-idea, 366 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
       <article class="tombstone" data-status="dead">
@@ -176,6 +186,8 @@
         <p class="epitaph savage-text">weather-app-weather-app has been quiet for 241 days; “try another icon set” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “try another icon set”</p>
         <p class="counts">★ 1 stars · 2 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP weather-app-weather-app, 241 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
       <article class="tombstone" data-status="dead">
@@ -191,6 +203,8 @@
         <p class="epitaph savage-text">recipe-scraper-2 has been quiet for 188 days; “handle one more site” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “handle one more site”</p>
         <p class="counts">★ 3 stars · 1 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP recipe-scraper-2, 188 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
       <article class="tombstone" data-status="dead">
@@ -206,6 +220,8 @@
         <p class="epitaph savage-text">my-first-framework has been quiet for 120 days; “rename core module” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “rename core module”</p>
         <p class="counts">★ 5 stars · 9 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP my-first-framework, 120 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
       <article class="tombstone" data-status="dead">
@@ -221,6 +237,8 @@
         <p class="epitaph savage-text">someday-dashboard has been quiet for 91 days; “wire up charts” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “wire up charts”</p>
         <p class="counts">★ 0 stars · 3 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP someday-dashboard, 91 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
       <article class="tombstone" data-status="dying">
@@ -235,6 +253,8 @@
         <p class="epitaph savage-text">habit-tracker-redux has been quiet for 78 days; “fix streak calculation” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “fix streak calculation”</p>
         <p class="counts">★ 4 stars · 5 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP habit-tracker-redux, 78 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
       <article class="tombstone" data-status="dying">
@@ -249,6 +269,8 @@
         <p class="epitaph savage-text">markdown-but-better has been quiet for 60 days; “button polish” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “button polish”</p>
         <p class="counts">★ 6 stars · 2 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP markdown-but-better, 60 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
       <article class="tombstone" data-status="dying">
@@ -263,6 +285,8 @@
         <p class="epitaph savage-text">portfolio-new-new has been quiet for 45 days; “adjust hero spacing” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “adjust hero spacing”</p>
         <p class="counts">★ 1 stars · 1 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP portfolio-new-new, 45 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
       <article class="tombstone" data-status="alive">
@@ -277,6 +301,8 @@
         <p class="epitaph savage-text">cli-for-everything has been quiet for 22 days; “add --help example” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “add --help example”</p>
         <p class="counts">★ 12 stars · 7 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP cli-for-everything, 22 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
       <article class="tombstone" data-status="alive">
@@ -291,6 +317,8 @@
         <p class="epitaph savage-text">tiny-game-prototype has been quiet for 9 days; “tune player jump” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “tune player jump”</p>
         <p class="counts">★ 9 stars · 0 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP tiny-game-prototype, 9 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
       <article class="tombstone" data-status="alive">
@@ -305,6 +333,8 @@
         <p class="epitaph savage-text">one-more-static-site has been quiet for 2 days; “update footer” is taking an impressive intermission.</p>
         <p class="last-commit">Last commit: “update footer”</p>
         <p class="counts">★ 2 stars · 0 open issues</p>
+        <button class="copy-button" type="button" data-copy="RIP one-more-static-site, 2 days. Cause: Long silence after the last push.">Copy my tombstone</button>
+        <span class="copy-status" aria-live="polite"></span>
       </article>
       
     </section>
@@ -337,6 +367,28 @@
       statusFilter.addEventListener("change", () => {
         document.querySelectorAll(".tombstone").forEach((card) => {
           card.hidden = statusFilter.value !== "all" && card.dataset.status !== statusFilter.value;
+        });
+      });
+      document.querySelectorAll(".copy-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          const status = button.nextElementSibling;
+          if (!navigator.clipboard || !navigator.clipboard.writeText) {
+            status.textContent = "Clipboard unavailable in this browser.";
+            return;
+          }
+          let copyPromise;
+          try {
+            // Start the clipboard write directly inside the click gesture.
+            copyPromise = navigator.clipboard.writeText(button.dataset.copy);
+          } catch (error) {
+            status.textContent = "Could not copy this tombstone.";
+            return;
+          }
+          copyPromise.then(() => {
+            status.textContent = "Tombstone copied.";
+          }).catch(() => {
+            status.textContent = "Could not copy this tombstone.";
+          });
         });
       });
     })();

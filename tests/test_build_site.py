@@ -64,3 +64,26 @@ def test_render_escapes_repo_content(tmp_path) -> None:
 
     assert "&lt;script&gt;" in html
     assert "<script>alert('x')</script>" not in html
+
+
+def test_phase_four_metadata_favicon_copy_and_empty_state(tmp_path) -> None:
+    repo = {
+        "name": "quiet-repo",
+        "language": "Python",
+        "stars": 0,
+        "open_issues": 0,
+        "days_since_last_push": 12,
+        "status": "alive",
+        "last_commit_message": "small update",
+        "cause_of_death": "Still writing",
+        "gentle": "A small light is still glowing.",
+        "savage": "The repo has remembered how to commit.",
+    }
+    html = build_site([repo], "demo", output_path=tmp_path / "index.html").read_text(encoding="utf-8")
+
+    assert "Your graveyard is empty. Suspiciously clean." in html
+    assert "RIP quiet-repo, 12 days. Cause: Still writing." in html
+    assert html.count("Copy my tombstone") == 1
+    assert 'name="description"' in html
+    assert "data:image/svg+xml" in html
+    assert "navigator.clipboard.writeText" in html
